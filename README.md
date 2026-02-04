@@ -34,17 +34,24 @@ This repository documents a fully functional OpenClaw setup with:
 
 ## ✅ Features
 
-### Working Now:
+### ✅ Working Excellently:
 - ✅ **Chat & Q&A** - Fast responses (20-22 seconds)
 - ✅ **Telegram Integration** - @mightyrajbot with streaming
-- ✅ **GitHub Management** - Repos, issues, PRs, CI/CD
+- ✅ **GitHub Management** - Repos, issues, PRs, CI/CD (tested & working!)
 - ✅ **Web Interface** - http://localhost:18789
 - ✅ **Weather Info** - Built-in skill
+- ✅ **Security** - Cryptographic pairing system (better than whitelist!)
 - ✅ **No Tool Loops** - Stable performance
 
-### Configured (Model-Limited):
-- ⚠️ **Browser Automation** - Configured but local models have limited tool use
-- ⚠️ **Memory** - File-based (ChromaDB ready for future versions)
+### ⚠️ Installed but Limited:
+- ⚠️ **Vision (BakLLaVA)** - Model installed but OpenClaw v2026.2.2-3 doesn't auto-route images
+- ⚠️ **Browser Automation** - Playwright Chromium configured but GLM-4.7 doesn't use tools
+- ⚠️ **Memory** - File-based only (ChromaDB installed, waiting for OpenClaw support)
+
+### 💡 Recommended Solutions:
+- For vision: Add Claude Haiku Vision (~$0.001/image)
+- For browser automation: Add Claude Haiku or manual browsing
+- See [LIMITATIONS.md](LIMITATIONS.md) for full analysis
 
 ## 🚀 Quick Start
 
@@ -75,6 +82,7 @@ openclaw setup
 Comprehensive guides included:
 
 - **[QUICK_START.md](QUICK_START.md)** - Get started quickly
+- **[LIMITATIONS.md](LIMITATIONS.md)** - **NEW!** Honest reality check on what works vs what doesn't
 - **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Common issues & fixes
 - **[REDDIT_SOLUTIONS.md](REDDIT_SOLUTIONS.md)** - Community solutions (r/LocalLLaMA)
 - **[GITHUB_SOLUTIONS.md](GITHUB_SOLUTIONS.md)** - GitHub Discussion #2936 analysis
