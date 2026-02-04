@@ -2,7 +2,12 @@
 
 **A brutally honest guide based on real-world testing**
 
----
+---🎯 The Core Issue:
+
+ 1 OpenClaw's system prompt is HUGE and designed for massive models like Claude Opus
+ 2 Local models get overwhelmed by the token-heavy prompt with all the tool definitions
+ 3 Smaller models lose focus and start explaining tools instead of conversing
+ 4 The system prompt is hard-coded - we can't easily customize it for local LLMs
 
 ## 🎯 TL;DR - The Uncomfortable Truth
 
