@@ -4,7 +4,101 @@
 
 ---
 
-## 🎯 TL;DR - The Uncomfortable Truth
+## ⚠️ THE CORE PROBLEM: System Prompt Overload
+
+**Before diving into limitations, understand THE fundamental issue with OpenClaw + Local LLMs:**
+
+### 🎯 The Root Cause
+
+OpenClaw's system prompt is **MASSIVE** and designed for enterprise-grade models like Claude Opus (200k context):
+
+1. **Prompt Size**: 5,000-10,000 tokens of instructions
+2. **Tool Definitions**: Every skill adds 200-500 tokens describing its schema
+3. **Context Consumption**: With 50 tools, system prompt alone = 15k-20k tokens
+4. **Model Capacity**: Local models (32k context) lose 50%+ context to just the prompt!
+
+### 💥 What This Means for Local Models
+
+**With GLM-4.7-Flash (32k context):**
+- System prompt + tools: ~18,000 tokens
+- **Available for conversation: Only ~14,000 tokens** (less than half!)
+- After 3-4 message exchanges: Context full, model starts forgetting
+
+**The Symptoms:**
+```
+User: "What's the weather?"
+Bot: "I have access to weather tools. The weather tool uses..."
+     [Explains tool instead of using it]
+
+User: "Just tell me the weather!"
+Bot: "To check weather, I can use the get_weather function which..."
+     [Still explaining instead of acting]
+```
+
+### 🔍 Why This Happens
+
+1. **Overwhelmed by Instructions**: Too many tool schemas in context
+2. **Lost Focus**: Model spends tokens describing rather than doing
+3. **Hard-Coded Prompt**: OpenClaw's system prompt isn't optimized for smaller models
+4. **No Customization**: Can't easily simplify prompt for local LLMs
+5. **Tool Schema Bloat**: Each tool definition eats precious context
+
+### 📊 Context Breakdown
+
+| Model | Total Context | System Prompt | Tools (50) | Available | Usable % |
+|-------|---------------|---------------|------------|-----------|----------|
+| **Claude Opus** | 200k tokens | 10k | 10k | 180k | 90% ✅ |
+| **GPT-4** | 128k tokens | 10k | 10k | 108k | 84% ✅ |
+| **GLM-4.7** | 32k tokens | 5k | 13k | 14k | 44% ⚠️ |
+| **Qwen2.5:14b** | 32k tokens | 5k | 15k | 12k | 38% ❌ |
+
+**Local models spend more context on instructions than actual conversation!**
+
+### 💡 Why Quantization Helped (But Didn't Fix This)
+
+**Q4_K_M quantization solved:**
+- ✅ KV cache memory issues
+- ✅ Inference speed
+- ✅ Context retention within available space
+
+**But DIDN'T solve:**
+- ❌ System prompt being too large
+- ❌ Tool definition bloat
+- ❌ Context allocation inefficiency
+- ❌ Model getting overwhelmed by instructions
+
+### 🔧 Potential Solutions (Not Yet Implemented)
+
+**What WOULD help:**
+1. **Simplified System Prompt**: Strip down to essentials for local models
+2. **Dynamic Tool Loading**: Only load relevant tools per conversation
+3. **Tool Schema Compression**: Shorter, more efficient definitions
+4. **Local-Optimized Mode**: Different prompt strategy for <50k context models
+5. **Prompt Templating**: Allow customization per model capability
+
+**Current Status:**
+- ❌ OpenClaw v2026.2.2-3 doesn't support custom system prompts
+- ❌ All tools loaded regardless of need
+- ❌ No context-aware prompt optimization
+- ⏳ Future versions may address this
+
+### 🎯 The Real Limitation
+
+**It's not just that local models are "dumber"** - they're fighting with one hand tied behind their back:
+- 50% of their context consumed before conversation starts
+- Overwhelmed by instructions they can't fully process
+- Trying to remember 50 tool schemas while chatting
+- Like asking someone to juggle while solving math problems
+
+**This is why:**
+- Simple tasks work (weather, time) - only need 1-2 tools
+- Complex tasks fail (browser automation) - need multiple tools + reasoning
+- Model explains instead of acts - confused by too many options
+- GitHub works - only 1 skill loaded, focused context
+
+---
+
+## 🎯 TL;DR - The Uncomfortable Truth (Now You Know WHY)
 
 **Free Local LLMs are NOT a replacement for GPT-4/Claude.**  
 They're a **different tool** with **different tradeoffs**.
