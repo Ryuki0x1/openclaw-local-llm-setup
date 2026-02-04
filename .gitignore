@@ -1,0 +1,34 @@
+# Sensitive Data
+*.token
+*_token
+*.key
+*_key
+*.secret
+auth-profiles.json
+openclaw.json
+openclaw.json.bak
+openclaw.json.*
+
+# API Keys
+.env
+.env.*
+
+# Credentials
+credentials/
+*.pem
+*.crt
+
+# Session Data
+sessions/
+sessions.json
+*.jsonl
+
+# Cache
+.cache/
+chroma/
+node_modules/
+*.log
+
+# System
+.DS_Store
+Thumbs.db
